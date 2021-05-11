@@ -44,8 +44,7 @@ const paymentCtrl = {
                 trackAndTrace: req.body.trackAndTrace,
                 shippingCompany: req.body.shippingCompany
             })
-            // if(!payment) return res.status(400).json({msg: "This payment does not exists"})
-            res.json(req.body.id)
+            if(!payment) return res.status(400).json({msg: "This payment does not exists"})
         } catch (err) {
             res.status(500).json({msg: err.message})
         }

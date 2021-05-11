@@ -34,7 +34,6 @@ export default function OrderDetails() {
         }
         formData.forEach((value, property) => [property] = value)
         await axios.post('/api/shipped', {id:orderdetails._id, trackAndTrace: trackATrace, shippingCompany: shippingCompany})
-        console.log(body)
     }
 
     return (
