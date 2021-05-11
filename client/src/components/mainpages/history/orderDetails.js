@@ -33,7 +33,7 @@ export default function OrderDetails() {
             shippingCompany: shippingCompany
         }
         formData.forEach((value, property) => [property] = value)
-        await axios.post('/api/shipped', {id:orderdetails._id, trackAndTrace: trackATrace})
+        await axios.post('/api/shipped', {id:orderdetails._id, trackAndTrace: trackATrace, shippingCompany: shippingCompany})
         console.log(body)
     }
 
@@ -78,7 +78,7 @@ export default function OrderDetails() {
                         <tbody>
                         <tr>
                             <td></td>
-                            <td></td>
+                            <td>{orderdetails.shippingCompany}</td>
                             <td>{orderdetails.trackAndTrace}</td>
                             <td></td>
                         </tr>
