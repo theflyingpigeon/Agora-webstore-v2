@@ -54,8 +54,8 @@ function Header() {
             <img src={Logo} width={"80"} alt={"agora logo"}/>
 
             <div className="logo">
-                <h1>
-                    <Link to="/">{isAdmin ? 'Admin' : 'Agora merch Shop'}</Link>
+                <h1 style={{margin: "-10px"}}>
+                    <Link to="/">{isAdmin ? 'dmin' : 'Agora merch Shop'}</Link>
                 </h1>
             </div>
 
