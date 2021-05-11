@@ -26,13 +26,8 @@ export default function OrderDetails() {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        const formData = new FormData(e.target)
-        const body = {
-            id: orderdetails._id,
-            trackAndTrace: trackATrace,
-            shippingCompany: shippingCompany
-        }
-        formData.forEach((value, property) => [property] = value)
+        // const formData = new FormData(e.target)
+        // formData.forEach((value, property) => [property] = value)
         await axios.post('/api/shipped', {id:orderdetails._id, trackAndTrace: trackATrace, shippingCompany: shippingCompany})
     }
 
