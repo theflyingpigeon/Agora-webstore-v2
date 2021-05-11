@@ -7,6 +7,7 @@ function OrderHistory() {
     const state = useContext(GlobalState)
     const [history, setHistory] = state.userAPI.history
     const [isAdmin] = state.userAPI.isAdmin
+
     const [token] = state.token
 
 
@@ -55,6 +56,7 @@ function OrderHistory() {
                 }
                 </tbody>
             </table>
+
         </div>
     )
 }

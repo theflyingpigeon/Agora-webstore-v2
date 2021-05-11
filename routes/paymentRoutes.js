@@ -8,5 +8,8 @@ router.route('/payment')
     .get(auth, authAdmin, paymentCtrl.getPayments)
     .post(auth, paymentCtrl.createPayment)
 
+router.route('/shipped')
+    .post(paymentCtrl.sendProduct)
+
 
 module.exports = router

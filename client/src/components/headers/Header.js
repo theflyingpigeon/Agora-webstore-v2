@@ -3,6 +3,7 @@ import {GlobalState} from '../../GlobalState'
 import Menu from './icon/Menu.svg'
 import Close from './icon/times.svg'
 import Cart from './icon/shopping-cart.svg'
+import Logo from './icon/logo.png'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
@@ -49,6 +50,8 @@ function Header() {
             <div className="menu" onClick={() => setMenu(!menu)}>
                 <img src={Menu} alt="" width="30" />
             </div>
+
+            <img src={Logo} width={"80"} alt={"agora logo"}/>
 
             <div className="logo">
                 <h1>

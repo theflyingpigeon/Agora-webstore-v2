@@ -28,6 +28,14 @@ const paymentSchema = new mongoose.Schema({
     status:{
         type: Boolean,
         default: false
+    },
+    trackAndTrace:{
+        type: String,
+        default: ''
+    },
+    shippingCompany: {
+        type: String,
+        default: ''
     }
 }, {
     timestamps: true

@@ -12,7 +12,7 @@ function Products() {
     const [isAdmin] = state.userAPI.isAdmin
     const [token] = state.token
     const [callback, setCallback] = state.productsApi.callback
-    const [loading, setLoading] = useState(false)
+    const [setLoading] = useState(false)
     const [isCheck, setIsCheck] = useState(false)
 
     const handleCheck = (id) => {

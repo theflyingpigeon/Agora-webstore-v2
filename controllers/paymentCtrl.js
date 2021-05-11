@@ -31,10 +31,23 @@ const paymentCtrl = {
 
 
             await newPayment.save()
-            res.json({msg: "Payment Succes!"})
+            res.json({msg: "Payment success!"})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
+        }
+    },
+    sendProduct: async (req, res) => {
+        try{
+            const payment = await Payments.findByIdAndUpdate(req.body.id, {
+                status: true,
+                trackAndTrace: req.body.trackAndTrace,
+                shippingCompany: req.body.shippingCompany
+            })
+            // if(!payment) return res.status(400).json({msg: "This payment does not exists"})
+            res.json(req.body.id)
+        } catch (err) {
+            res.status(500).json({msg: err.message})
         }
     }
 }
