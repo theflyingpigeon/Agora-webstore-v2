@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {useParams} from 'react-router-dom';
+import {NavLink, Route, useParams} from 'react-router-dom';
 import {GlobalState} from "../../../GlobalState";
+import {BrowserRouter as Router, Link, Redirect} from 'react-router-dom'
 import axios from "axios";
 
 
@@ -15,20 +16,24 @@ export default function OrderDetails() {
     const params = useParams()
 
     useEffect(() => {
-        if(params.id){
+        if (params.id) {
             history.forEach(item => {
-                if(item._id === params.id) setOrderDetails(item)
+                if (item._id === params.id) setOrderDetails(item)
             })
         }
     }, [params.id, history])
-    
-    if(orderdetails.length === 0 ) return  null;
+
+    if (orderdetails.length === 0) return null;
 
     const handleSubmit = async e => {
         e.preventDefault()
         // const formData = new FormData(e.target)
         // formData.forEach((value, property) => [property] = value)
-        await axios.post('/api/shipped', {id:orderdetails._id, trackAndTrace: trackATrace, shippingCompany: shippingCompany})
+        await axios.post('/api/shipped', {
+            id: orderdetails._id,
+            trackAndTrace: trackATrace,
+            shippingCompany: shippingCompany
+        })
     }
 
     return (
@@ -41,8 +46,7 @@ export default function OrderDetails() {
                     <th>Address</th>
                     <th>Postal Code</th>
                     <th>Country Code</th>
-                    <th>Shipped</th>
-                    <th>track & trace code</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,7 +56,6 @@ export default function OrderDetails() {
                     <td>{orderdetails.address.postal_code}</td>
                     <td>{orderdetails.address.country_code}</td>
                     <td>{orderdetails.status ? "Shipped" : "Ongoing"}</td>
-                    <td>{orderdetails.status ? "Shipped" : "Not availible"}</td>
                 </tr>
                 </tbody>
             </table>
@@ -73,7 +76,21 @@ export default function OrderDetails() {
                         <tr>
                             <td></td>
                             <td>{orderdetails.shippingCompany}</td>
-                            <td>{orderdetails.trackAndTrace}</td>
+                            <Router>
+                                <td><NavLink to={"/postNL"}>{orderdetails.trackAndTrace}</NavLink></td>
+
+                                <Route
+                                    path={"/postNL"}
+                                    component = {() => {
+                                        let link = document.createElement("a");
+                                        link.href = `https://jouw.postnl.nl/track-and-trace/${orderdetails.trackAndTrace}-${orderdetails.address.country_code}-${orderdetails.address.postal_code}`
+                                        document.body.append(link);
+
+                                        link.click();
+                                        return null;
+                                    }}
+                                />
+                            </Router>
                             <td></td>
                         </tr>
                         </tbody>
@@ -110,18 +127,21 @@ export default function OrderDetails() {
                     <div className={"create_product"}>
                         <form onSubmit={e => handleSubmit(e)}>
                             <label>Track & trace code</label>
-                            <input type={"text"} placeholder={"Track and trace code"} name={"trackAndTrace"}  onChange={text => setTrackATrace(text.target.value
-                            )} value={trackATrace} required/>
-                            <br />
+                            <input type={"text"} placeholder={"Track and trace code"} name={"trackAndTrace"}
+                                   onChange={text => setTrackATrace(text.target.value
+                                   )} value={trackATrace} required/>
+                            <br/>
                             <div className={"row"}>
-                                <select name={"ShippingCompany"} onChange={text => setShippingCompany(text.target.value)} value={shippingCompany}>
+                                <select name={"ShippingCompany"}
+                                        onChange={text => setShippingCompany(text.target.value)}
+                                        value={shippingCompany}>
                                     <option value={""}>Please select a shipping company</option>
                                     <option value={"PostNL"}>PostNL</option>
                                     <option value={"DHL"}>DHL</option>
                                     <option value={"DPD"}>DPD</option>
                                 </select>
                             </div>
-                            <br />
+                            <br/>
                             <button type={"submit"}>Shipped</button>
                         </form>
                     </div>

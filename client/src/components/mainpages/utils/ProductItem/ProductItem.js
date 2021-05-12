@@ -4,7 +4,7 @@ import BtnRender from './BtnRender'
 function ProductItem({product, isAdmin, deleteProduct, handleCheck}) {
 
     return (
-        <div className="product_card">
+        <div className="product_card mb-2">
             {
                 isAdmin && <input type="checkbox" checked={product.checked}
                                   onChange={() => handleCheck(product._id)} />
@@ -18,7 +18,7 @@ function ProductItem({product, isAdmin, deleteProduct, handleCheck}) {
             </div>
 
 
-            <BtnRender product={product} deleteProduct={deleteProduct} />
+            <BtnRender product={product} deleteProduct={deleteProduct}/>
         </div>
     )
 }

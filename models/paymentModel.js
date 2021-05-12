@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const paymentSchema = new mongoose.Schema({
     user_id:{
         type: String,
-        required: true
+        default: ''
     },
     name:{
         type: String,

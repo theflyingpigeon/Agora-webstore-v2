@@ -55,7 +55,7 @@ function Header() {
 
             <div className="logo">
                 <h1 style={{margin: "-10px"}}>
-                    <Link to="/">{isAdmin ? 'dmin' : 'Agora merch Shop'}</Link>
+                    <Link to="/">{isAdmin ? 'dmin' : 'gora merch Shop'}</Link>
                 </h1>
             </div>
 

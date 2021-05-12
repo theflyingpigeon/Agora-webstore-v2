@@ -8,11 +8,14 @@ function Cart() {
     const [cart, setCart] = state.userAPI.cart
     const [token] = state.token
     const [total, setTotal] = useState(0)
+    const [isLogged] = state.userAPI.isLogged
+
+    const shipmentFrees = 6.75
 
     useEffect(() =>{
         const getTotal = () =>{
             const total = cart.reduce((prev, item) => {
-                return (prev + (item.price * item.quantity))
+                return ((prev + (item.price * item.quantity) + shipmentFrees).toFixed(2))
             },0)
 
             setTotal(total)
@@ -67,14 +70,33 @@ function Cart() {
     const tranSuccess = async(payment) => {
         const {paymentID, address} = payment;
 
-        await axios.post('/api/payment', {cart, paymentID, address}, {
-            headers: {Authorization: token}
-        })
+
+        if(isLogged){
+            await axios.post('/api/payment', {cart, paymentID, address}, {
+                headers: {Authorization: token}
+            })
+        } else {
+            const data = {
+                name: address.recipient_name,
+                email: payment.email,
+                paymentID: paymentID,
+                address: address,
+                cart: cart
+            }
+            await axios.post('/api/paymentWOA', {
+                name: address.recipient_name,
+                email: payment.email,
+                paymentID: paymentID,
+                address: address,
+                cart: cart
+            })
+            console.log(data)
+        }
 
         setCart([])
         addToCart([])
         alert("You have successfully placed an order.")
-        console.log(payment)
+        // console.log(payment)
     }
 
 
@@ -110,11 +132,14 @@ function Cart() {
                 ))
             }
 
-            <div className="total">
-                <h3>Total: $ {total}</h3>
-                <PaypalButton
-                    total={total}
-                    tranSuccess={tranSuccess} />
+            <div className={"column"}>
+                <div className="total">
+                    <h3>Shipment fees: €{shipmentFrees}</h3>
+                    <h3>Total: €{total}</h3>
+                    <PaypalButton
+                        total={total}
+                        tranSuccess={tranSuccess} />
+                </div>
             </div>
         </div>
     )

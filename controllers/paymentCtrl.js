@@ -4,7 +4,7 @@ const Products = require('../models/productModel')
 
 
 const paymentCtrl = {
-    getPayments: async(req, res) =>{
+    getPayments: async (req, res) => {
         try {
             const payments = await Payments.find()
             res.json(payments)
@@ -12,18 +12,19 @@ const paymentCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
-    createPayment: async(req, res) => {
+    createPayment: async (req, res) => {
         try {
             const user = await Users.findById(req.user.id).select('name email')
-            if(!user) return res.status(400).json({msg: "User does not exist."})
+            // if(!user) return res.status(400).json({msg: "User does not exist."})
 
             const {cart, paymentID, address} = req.body;
-
             const {_id, name, email} = user;
+
 
             const newPayment = new Payments({
                 user_id: _id, name, email, cart, paymentID, address
             })
+
 
             cart.filter(item => {
                 return sold(item._id, item.quantity, item.sold)
@@ -38,20 +39,43 @@ const paymentCtrl = {
         }
     },
     sendProduct: async (req, res) => {
-        try{
+        try {
             const payment = await Payments.findByIdAndUpdate(req.body.id, {
                 status: true,
                 trackAndTrace: req.body.trackAndTrace,
                 shippingCompany: req.body.shippingCompany
             })
-            if(!payment) return res.status(400).json({msg: "This payment does not exists"})
+            if (!payment) return res.status(400).json({msg: "This payment does not exists"})
         } catch (err) {
             res.status(500).json({msg: err.message})
+        }
+    },
+    createPaymentWOA: async (req, res) => {
+        try {
+            const name = req.body.name;
+            const email = req.body.email;
+            const paymentID = req.body.paymentID;
+            const address = req.body.address;
+            const cart = req.body.cart;
+
+            const newPayment = new Payments({
+                name, email, cart, paymentID, address
+            })
+            cart.filter(item => {
+                return sold(item._id, item.quantity, item.sold)
+            })
+
+
+            await newPayment.save()
+            res.json({msg: "Payment success!"})
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
         }
     }
 }
 
-const sold = async (id, quantity, oldSold) =>{
+const sold = async (id, quantity, oldSold) => {
     await Products.findOneAndUpdate({_id: id}, {
         sold: quantity + oldSold
     })

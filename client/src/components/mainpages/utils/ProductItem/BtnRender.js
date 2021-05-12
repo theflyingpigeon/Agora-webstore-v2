@@ -12,7 +12,7 @@ function BtnRender({product, deleteProduct}) {
         <div className="row_btn">
             {
                 isAdmin ?
-                    <>
+                    <div className={"mb-2"}>
                         <Link id="btn_buy" to="#!"
                               onClick={() =>deleteProduct(product._id, product.images.public_id)}>
                             Delete
@@ -20,7 +20,7 @@ function BtnRender({product, deleteProduct}) {
                         <Link id="btn_view" to={`/edit_product/${product._id}`}>
                             Edit
                         </Link>
-                    </>
+                    </div>
                     : <>
                         <Link id="btn_buy" to="#!" onClick={() => addCart(product)}>
                             Buy
