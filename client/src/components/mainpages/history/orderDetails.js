@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {NavLink, Route, useParams} from 'react-router-dom';
+import {BrowserRouter as Router, NavLink, Route, useParams} from 'react-router-dom';
 import {GlobalState} from "../../../GlobalState";
-import {BrowserRouter as Router, Link, Redirect} from 'react-router-dom'
 import axios from "axios";
 
 
@@ -27,8 +26,6 @@ export default function OrderDetails() {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        // const formData = new FormData(e.target)
-        // formData.forEach((value, property) => [property] = value)
         await axios.post('/api/shipped', {
             id: orderdetails._id,
             trackAndTrace: trackATrace,

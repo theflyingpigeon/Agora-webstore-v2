@@ -11,7 +11,7 @@
     "client-install": "cd client && npm install",
     "install-all": "concurrently \"npm run server-install\" \"npm run client-install\"",
     "dev": "concurrently \"npm run server-install\" \"npm run client\"",
-    "update": "git add . && git commit -m \"Now with clickable PostNL track and trace code\" && git push heroku",
+    "update": "git add . && git commit -m \"Added a confirm when ypu delete multiple items\" && git push heroku",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "keywords": [],

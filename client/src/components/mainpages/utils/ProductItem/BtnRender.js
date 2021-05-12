@@ -7,6 +7,8 @@ function BtnRender({product, deleteProduct}) {
     const [isAdmin] = state.userAPI.isAdmin
     const addCart = state.userAPI.addCart
 
+    const voorraad = 1
+
 
     return (
         <div className="row_btn">
@@ -23,7 +25,7 @@ function BtnRender({product, deleteProduct}) {
                     </div>
                     : <>
                         <Link id="btn_buy" to="#!" onClick={() => addCart(product)}>
-                            Buy
+                            {voorraad > 0 ? "Buy" : "Pre-order"}
                         </Link>
                         <Link id="btn_view" to={`/detail/${product._id}`}>
                             View

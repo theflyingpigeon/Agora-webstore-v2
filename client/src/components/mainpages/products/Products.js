@@ -1,10 +1,11 @@
-import React, {useContext, useState} from 'react';
-import {GlobalState} from "../../../GlobalState";
-import ProductItem from "../utils/ProductItem/ProductItem";
-import Loading from "../utils/Loading/Loading";
-import Filters from "./filters";
-import LoadMore from "./LoadMore";
-import axios from "axios";
+import React, {useContext, useState} from 'react'
+import {GlobalState} from '../../../GlobalState'
+import ProductItem from '../utils/ProductItem/ProductItem'
+import Loading from '../utils/Loading/Loading'
+import axios from 'axios'
+import Filters from './filters'
+import LoadMore from './LoadMore'
+
 
 function Products() {
     const state = useContext(GlobalState)
@@ -12,20 +13,20 @@ function Products() {
     const [isAdmin] = state.userAPI.isAdmin
     const [token] = state.token
     const [callback, setCallback] = state.productsApi.callback
-    const [setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [isCheck, setIsCheck] = useState(false)
 
-    const handleCheck = (id) => {
+    const handleCheck = (id) =>{
         products.forEach(product => {
-            if (product._id === id) product.checked = !product.checked
+            if(product._id === id) product.checked = !product.checked
         })
         setProducts([...products])
     }
 
-    const deleteProduct = async (id, public_id) => {
+    const deleteProduct = async(id, public_id) => {
         try {
             setLoading(true)
-            const destroyImg = axios.post('/api/destroy', {public_id}, {
+            const destroyImg = axios.post('/api/destroy', {public_id},{
                 headers: {Authorization: token}
             })
             const deleteProduct = axios.delete(`/api/products/${id}`, {
@@ -41,7 +42,7 @@ function Products() {
         }
     }
 
-    const checkAll = () => {
+    const checkAll = () =>{
         products.forEach(product => {
             product.checked = !isCheck
         })
@@ -49,35 +50,44 @@ function Products() {
         setIsCheck(!isCheck)
     }
 
-    const deleteAll = () => {
-        products.forEach(product => {
-            if(product.checked) deleteProduct(product._id, product.images.public_id)
-        })
+    const deleteAll = () =>{
+
+        if(window.confirm("Do you want to delete those items?")){
+            products.forEach(product => {
+                    if(product.checked) deleteProduct(product._id, product.images.public_id)
+                })
+        } else {
+            alert("The items will not be deleted")
+        }
     }
 
+    if(loading) return <div><Loading /></div>
     return (
-        <div>
+        <>
             <Filters />
+
             {
                 isAdmin &&
-                <div className={"delete-all"}>
+                <div className="delete-all">
                     <span>Select all</span>
-                    <input type={"checkbox"} checked={isCheck} onChange={checkAll}/>
-                    <button onClick={deleteAll}>Delete all</button>
+                    <input type="checkbox" checked={isCheck} onChange={checkAll} />
+                    <button onClick={deleteAll}>Delete ALL</button>
                 </div>
             }
+
             <div className="products">
                 {
                     products.map(product => {
-                        return <ProductItem key={product._id} product={product} isAdmin={isAdmin}
-                                            deleteProduct={deleteProduct} handleCheck={handleCheck}/>
+                        return <ProductItem key={product._id} product={product}
+                                            isAdmin={isAdmin} deleteProduct={deleteProduct} handleCheck={handleCheck} />
                     })
                 }
             </div>
+
             <LoadMore />
-            {products.length === 0 && <Loading/>}
-        </div>
-    );
+            {products.length === 0 && <Loading />}
+        </>
+    )
 }
 
-export default Products;
+export default Products
