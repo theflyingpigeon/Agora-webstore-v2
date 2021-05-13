@@ -57,15 +57,25 @@ const productCtrl = {
     },
     createProduct: async (req, res) => {
         try{
-            const {product_id, title, price, description, content, images, category} = req.body;
+            const {product_id, title, price, description, content, images, category, stock, clothing} = req.body;
+            console.log(req.body);
             if(!images) return res.status(400).json({msg: "No image uploaded"})
 
             const product = await Products.findOne({product_id})
             if(product) return res.status(400).json({msg: "Product already exists"})
 
-            const newProduct = new Products({
-                product_id, title: title.toLowerCase(), price, description, content, images, category
-            })
+            let newProduct;
+
+            if(clothing){
+                const {size} = req.body;
+                newProduct = new Products({
+                    product_id, title: title.toLowerCase(), price, description, content, images, category, stock, clothing, size
+                })
+            } else {
+                newProduct = new Products({
+                    product_id, title: title.toLowerCase(), price, description, content, images, category, stock
+                })
+            }
 
             await newProduct.save()
 
@@ -85,14 +95,60 @@ const productCtrl = {
     },
     updateProduct: async (req, res) => {
         try{
-            const {title, price, description, content, images, category} = req.body;
+            const {title, price, description, content, images, category, stock} = req.body;
             if(!images) return res.status(400).json({msg: "No image uploaded"});
 
             await Products.findByIdAndUpdate({_id: req.params.id}, {
-                title: title.toLowerCase(), price, description, content, images, category
+                title: title.toLowerCase(), price, description, content, images, category, stock
             })
 
             res.json("Product updated")
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
+    updateStock: async (req, res) => {
+        try{
+            const {id, stock, quantity, state} = req.body
+
+            let updateStock;
+
+            if (state) {
+                updateStock = stock - quantity
+            } else {
+                updateStock = stock + quantity
+            }
+
+            await Products.findByIdAndUpdate({_id: id}, {
+                stock: updateStock
+            })
+            res.json({msg: "stock successfully updated"})
+        } catch (err) {
+            res.status(500).json({msg: err.message})
+        }
+    },
+    setStock: async (req, res) => {
+        try{
+            const {id, stock} = req.body
+
+            await Products.findByIdAndUpdate({_id: id}, {
+                stock: stock
+            })
+            res.json({msg: "stock successfully"})
+        } catch (err) {
+            res.status(500).json({msg: err.message})
+        }
+    },
+    setSize: async (req, res) => {
+        try{
+            const {sStock, sAvailible, mStock, mAvailible, lStock, lAvailible, xlStock, xlAvailible} = req.body;
+
+            const ssize = {Stock: sStock, Availible: sAvailible}
+            const msize = {Stock: mStock, Availible: mAvailible}
+            const lsize = {Stock: lStock, Availible: lAvailible}
+            const xlsize = {Stock: xlStock, Availible: xlAvailible}
+
+            res.json({stock: {ssize, msize, lsize, xlsize}})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }

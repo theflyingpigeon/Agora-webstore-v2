@@ -27,8 +27,8 @@ const productSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    description:{
-        type: String,
+    stock:{
+        type: Number,
         required: true
     },
     images:{
@@ -47,6 +47,14 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    clothing: {
+        type: Boolean,
+        default: false,
+    },
+    size: {
+        type: Array,
+        default: []
+    }
 },{
     timestamps: true
 })

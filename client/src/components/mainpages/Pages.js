@@ -10,6 +10,7 @@ import OrderHistory from "./history/orderHistory";
 import OrderDetails from "./history/orderDetails";
 import Categories from "./categories/categories";
 import CreateProduct from "./createProduct/createProduct";
+import StockForm from "./utils/StockForm";
 import {GlobalState} from "../../GlobalState";
 
 function Pages() {
@@ -28,6 +29,7 @@ function Pages() {
            <Route path={'/category'} exact component={isAdmin ? Categories : NotFound} />
            <Route path={'/create_product'} exact component={isAdmin ? CreateProduct : NotFound} />
            <Route path="/edit_product/:id" exact component={isAdmin ? CreateProduct : NotFound} />
+           <Route path={'/Inventory'} exact component={isAdmin ? StockForm : NotFound} />
 
            <Route path={'/cart'} exact component={Cart} />
 

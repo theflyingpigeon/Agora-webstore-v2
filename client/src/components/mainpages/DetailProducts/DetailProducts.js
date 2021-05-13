@@ -35,6 +35,18 @@ function DetailProducts() {
                     <p>{detailProduct.description}</p>
                     <p>{detailProduct.content}</p>
                     <p>Sold: {detailProduct.sold}</p>
+
+                    {
+                        detailProduct.clothing ? <select name={"size"}>
+                            <option value={"size options"}>
+                                Please select am option
+                            </option>
+                            {product.map(product => (
+                                <option key={product._id}>{product.size.data}</option>
+                            ))}
+                        </select> : ""
+                    }
+
                     <Link to={'/cart'} className={"cart"} onClick={() => addCart(detailProduct)}>Buy now</Link>
                 </div>
             </div>

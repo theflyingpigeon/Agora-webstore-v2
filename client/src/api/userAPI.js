@@ -6,7 +6,6 @@ function UserAPI(token) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [cart, setCart] = useState([])
     const [history, setHistory] = useState([])
-    const [verstuurd, setVerstuurd] = useState(false);
 
     useEffect(() =>{
         if(token){
@@ -34,8 +33,6 @@ function UserAPI(token) {
 
 
     const addCart = async (product) => {
-        // if(!isLogged) return alert("Please login to continue buying")
-
         const check = cart.every(item =>{
             return item._id !== product._id
         })
@@ -49,6 +46,8 @@ function UserAPI(token) {
                 })
             }
 
+            await axios.post('/api/updateStock', {id: product._id, stock: product.stock, quantity: 1, state: true})
+
         }else{
             alert("This product has been added to cart.")
         }
@@ -60,7 +59,6 @@ function UserAPI(token) {
         cart: [cart, setCart],
         addCart: addCart,
         history: [history, setHistory],
-        verstuurd: [verstuurd, setVerstuurd]
     }
 }
 

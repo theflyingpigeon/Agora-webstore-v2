@@ -12,4 +12,13 @@ router.route('/products/:id')
     .delete(productCtrl.deleteProduct)
     .put(productCtrl.updateProduct)
 
+router.route('/updateStock')
+    .post(productCtrl.updateStock)
+
+router.route('/setStock')
+    .post(productCtrl.setStock)
+
+router.route('/setSize')
+    .post(productCtrl.setSize)
+
 module.exports = router

@@ -36,6 +36,7 @@ function Cart() {
         cart.forEach(item => {
             if(item._id === id){
                 item.quantity += 1
+                axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: 1, state: true}) //When state is true the stock will decrease
             }
         })
 
@@ -47,6 +48,7 @@ function Cart() {
         cart.forEach(item => {
             if(item._id === id){
                 item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1
+                axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: 1, state: false}) //When state is false the stock will increase
             }
         })
 
@@ -59,6 +61,7 @@ function Cart() {
             cart.forEach((item, index) => {
                 if(item._id === id){
                     cart.splice(index, 1)
+                    axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: item.quantity, state: false}) //When state is false the stock will increase
                 }
             })
 

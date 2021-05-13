@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
-import axios from "axios";
+import {useState, useEffect} from 'react'
+import axios from 'axios'
+
 
 function ProductsApi() {
     const [products, setProducts] = useState([])
@@ -30,4 +31,4 @@ function ProductsApi() {
     }
 }
 
-export default ProductsApi;
+export default ProductsApi
