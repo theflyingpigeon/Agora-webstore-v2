@@ -38,7 +38,7 @@ function CreateProduct() {
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.productsApi.callback
 
-    const [total, setTotal] = useState(0)
+    const [total] = useState(0)
 
     useEffect(() => {
         if (param.id) {
@@ -109,13 +109,13 @@ function CreateProduct() {
     const handleSubmit = async e => {
         e.preventDefault()
 
-        if ((product.S + product.M + product.L + product.XL) > 0){
-            const newTotal = (product.S + product.M + product.L + product.XL)
-            product.stock = newTotal
-            product.clothing = true;
-        }
-
         try {
+
+            if ((Number(product.S) + Number(product.M) + Number(product.L)+ Number(product.XL)) > 0){
+                product.stock = (Number(product.S) + Number(product.M) + Number(product.L)+ Number(product.XL))
+                setChecked(true);
+            }
+
             if (!isAdmin) return alert("You're not an admin")
 
             if (onEdit) {
