@@ -18,7 +18,16 @@ router.route('/updateStock')
 router.route('/setStock')
     .post(productCtrl.setStock)
 
-router.route('/setSize')
-    .post(productCtrl.setSize)
+router.route('/setStockS')
+    .post(productCtrl.setStockS)
+
+router.route('/setStockM')
+    .post(productCtrl.setStockM)
+
+router.route('/setStockL')
+    .post(productCtrl.setStockL)
+
+router.route('/setStockXL')
+    .post(productCtrl.setStockXL)
 
 module.exports = router

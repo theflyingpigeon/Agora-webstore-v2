@@ -14,7 +14,10 @@ const initialState = {
     _id: '',
     stock: 0,
     clothing: false,
-    size: []
+    S: 0,
+    M: 0,
+    L: 0,
+    XL: 0
 }
 
 function CreateProduct() {
@@ -23,7 +26,6 @@ function CreateProduct() {
     const [categories] = state.categoriesAPI.categories
     const [images, setImages] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [size, setSize] = useState([])
     const [checked, setChecked] = useState(false)
 
     const [isAdmin] = state.userAPI.isAdmin
@@ -35,11 +37,6 @@ function CreateProduct() {
     const [products] = state.productsApi.products
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.productsApi.callback
-
-    const [sStock, setSStock] = useState(0)
-    const [mStock, setMStock] = useState(0)
-    const [lStock, setLStock] = useState(0)
-    const [xlStock, setXLStock] = useState(0)
 
     const [total, setTotal] = useState(0)
 
@@ -57,14 +54,6 @@ function CreateProduct() {
             setProduct(initialState)
             setImages(false)
         }
-
-        const getTotal = () => {
-            const total = size.reduce((prev, item) => {
-                return (prev + (item.stock))
-            }, 0)
-            setTotal(total)
-        }
-        getTotal()
 
     }, [param.id, products])
 
@@ -117,59 +106,24 @@ function CreateProduct() {
         setProduct({...product, [name]: value})
     }
 
-    const handleSize = async e => {
-        e.preventDefault()
-
-        switch (e.target.name) {
-            case 'S': {
-                setSStock(e.target.value)
-                break;
-            }
-            case 'M': {
-                setMStock(e.target.value)
-                break;
-            }
-            case 'L': {
-                setLStock(e.target.value)
-                break;
-            }
-            case 'XL': {
-                setXLStock(e.target.value)
-                break;
-            }
-        }
-
-        try {
-            const res = await axios.post('/api/setSize',
-                {
-                    sStock,
-                    sAvailible: sStock > 1,
-                    mStock,
-                    mAvailible: mStock > 1,
-                    lStock,
-                    lAvailible: lStock > 1,
-                    xlStock,
-                    xlAvailible: xlStock > 1
-                })
-            setSize(res.data);
-            console.log(size)
-        } catch (err) {
-            alert(err.response.message)
-        }
-    }
-
     const handleSubmit = async e => {
-
         e.preventDefault()
+
+        if ((product.S + product.M + product.L + product.XL) > 0){
+            const newTotal = (product.S + product.M + product.L + product.XL)
+            product.stock = newTotal
+            product.clothing = true;
+        }
+
         try {
             if (!isAdmin) return alert("You're not an admin")
 
             if (onEdit) {
-                await axios.put(`/api/products/${product._id}`, {...product, images, clothing: checked, size: size}, {
+                await axios.put(`/api/products/${product._id}`, {...product, images, clothing: checked}, {
                     headers: {Authorization: token}
                 })
             } else {
-                await axios.post('/api/products', {...product, images, clothing: checked, size: size}, {
+                await axios.post('/api/products', {...product, images, clothing: checked}, {
                     headers: {Authorization: token}
                 })
             }
@@ -239,35 +193,35 @@ function CreateProduct() {
 
                 <div>
                     <label htmlFor={"Clothing"}>Clothing</label>
-                    <input type={"checkbox"} onClick={() => setChecked(!checked)}/>
+                    <input type={"checkbox"} value={checked} onClick={() => setChecked(!checked)}/>
                 </div>
 
                 <div className={"row"}>
                     <table className={"history-page"}>
+                        <thead>
                         <tr>
                             <th>Size</th>
                             <th>Stock</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>S</td>
-                            <td><input type={"number"} name={"S"} onChange={handleSize}/></td>
+                            <td><input type="number" name="S" id="S" value={product.S} onChange={handleChangeInput}/></td>
                         </tr>
                         <tr>
                             <td>M</td>
-                            <td><input type={"number"} name={"M"} onChange={handleSize}/></td>
+                            <td><input value={product.M} type={"number"} name={"M"} id={"M"} onChange={handleChangeInput}/></td>
                         </tr>
                         <tr>
                             <td>L</td>
-                            <td><input type={"number"} name={"L"} onChange={handleSize}/></td>
+                            <td><input value={product.L} type={"number"} name={"L"} id={"L"} onChange={handleChangeInput}/></td>
                         </tr>
                         <tr>
                             <td>XL</td>
-                            <td><input type={"number"} name={"XL"} onChange={handleSize} onChangeCapture={handleSize}/></td>
+                            <td><input value={product.XL} type={"number"} name={"XL"} id={"XL"} onChange={handleChangeInput}/></td>
                         </tr>
-                        <tr>
-                            <td>The when done type one channel!!!!!! 🥳🥳</td>
-                            <td><input type={"number"} onChange={handleSize}/></td>
-                        </tr>
+                        </tbody>
                     </table>
                 </div>
 

@@ -7,9 +7,9 @@ function UserAPI(token) {
     const [cart, setCart] = useState([])
     const [history, setHistory] = useState([])
 
-    useEffect(() =>{
-        if(token){
-            const getUser = async () =>{
+    useEffect(() => {
+        if (token) {
+            const getUser = async () => {
                 try {
                     const res = await axios.get('/user/infor', {
                         headers: {Authorization: token}
@@ -28,27 +28,53 @@ function UserAPI(token) {
             getUser()
 
         }
-    },[token])
+    }, [token])
 
 
-
-    const addCart = async (product) => {
-        const check = cart.every(item =>{
+    const addCart = async (product, size) => {
+        const check = cart.every(item => {
             return item._id !== product._id
         })
 
-        if(check){
+        var stock;
+
+        product.title = product.title + ' ' + size
+
+        if (check) {
             setCart([...cart, {...product, quantity: 1}])
 
-            if(isLogged){ //added for testing
+            if (isLogged) { //added for testing
                 await axios.patch('/user/addcart', {cart: [...cart, {...product, quantity: 1}]}, {
                     headers: {Authorization: token}
                 })
             }
 
-            await axios.post('/api/updateStock', {id: product._id, stock: product.stock, quantity: 1, state: true})
+            if (size.length > 0) {
+                switch (size) {
+                    case 'S' :{
+                        stock = product.S
+                        break;
+                    }
+                    case 'M' :{
+                        stock = product.M
+                        break;
+                    }
+                    case 'L' :{
+                        stock = product.L
+                        break;
+                    }
+                    case 'XL' :{
+                        stock = product.XL;
+                        break;
+                    }
+                }
+            } else {
+                stock = product.stock
+            }
 
-        }else{
+                await axios.post('/api/updateStock', {id: product._id, stock: stock, quantity: 1, state: true})
+
+        } else {
             alert("This product has been added to cart.")
         }
     }

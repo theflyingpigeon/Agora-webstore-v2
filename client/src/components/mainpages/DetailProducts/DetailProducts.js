@@ -9,14 +9,41 @@ function DetailProducts() {
     const [product] = state.productsApi.products
     const addCart = state.userAPI.addCart;
     const [detailProduct, setDetailproduct] = useState([])
+    const [sizeStock, setSizeStock] = useState(0)
+    const [size, setSize] = useState('')
 
     useEffect(() => {
-        if(params.id){
+        if (params.id) {
             product.forEach(product => {
-                if(product._id === params.id) setDetailproduct(product)
+                if (product._id === params.id) setDetailproduct(product)
             })
         }
     }, [params.id, product])
+
+    const handleSize = e => {
+        switch (e.target.value) {
+            case 'S' :{
+                setSizeStock(detailProduct.S);
+                setSize('S');
+                break;
+            }
+            case 'M' :{
+                setSizeStock(detailProduct.M);
+                setSize('M');
+                break;
+            }
+            case 'L' :{
+                setSizeStock(detailProduct.L);
+                setSize('L');
+                break;
+            }
+            case 'XL' :{
+                setSizeStock(detailProduct.XL);
+                setSize('XL');
+                break;
+            }
+        }
+    }
 
     if (detailProduct.length === 0) return null;
 
@@ -37,17 +64,30 @@ function DetailProducts() {
                     <p>Sold: {detailProduct.sold}</p>
 
                     {
-                        detailProduct.clothing ? <select name={"size"}>
-                            <option value={"size options"}>
-                                Please select am option
-                            </option>
-                            {product.map(product => (
-                                <option key={product._id}>{product.size.data}</option>
-                            ))}
-                        </select> : ""
+                        detailProduct.clothing ?
+                            <div className={"filter_menu"}>
+                                <select name={"size"} onChange={handleSize} >
+                                    <option value={"size options"}>
+                                        Please select am option
+                                    </option>
+                                    <option value={"S"}>S</option>
+                                    <option value={"M"}>M</option>
+                                    <option value={"L"}>L</option>
+                                    <option value={"XL"}>XL</option>
+                                </select>
+                            </div>
+                            : <br/>
                     }
 
-                    <Link to={'/cart'} className={"cart"} onClick={() => addCart(detailProduct)}>Buy now</Link>
+                    <br/>
+
+                    {
+                        detailProduct.clothing ?
+                        <Link to={'/cart'} className={"cart"} onClick={() => addCart(detailProduct, size)}>{sizeStock > 0 ? "Buy now" : "This aint working"}</Link>
+                        :
+                        <Link to={'/cart'} className={"cart"}
+                        onClick={() => addCart(detailProduct)}>{detailProduct.stock ? "Buy now" : "Pre-order from clothing"}</Link>
+                    }
                 </div>
             </div>
 
@@ -57,7 +97,7 @@ function DetailProducts() {
                     {
                         product.map(product => {
                             return product.category === detailProduct.category
-                            ? <ProductItem key={product._id} product={product} /> : null
+                                ? <ProductItem key={product._id} product={product}/> : null
                         })
                     }
                 </div>
