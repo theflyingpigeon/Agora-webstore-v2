@@ -86,7 +86,6 @@ function StockForm() {
                                 <td><img src={product.images.url} alt={"product item"} height={50}/></td>
                                 <td>{product.title}</td>
                                 <td>{product.stock}</td>
-
                                 <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
                                 <td>
                                     <button type={"submit"} onClick={e => updateStock(e, product._id, stock)}>Save
