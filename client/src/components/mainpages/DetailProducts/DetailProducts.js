@@ -83,7 +83,8 @@ function DetailProducts() {
 
                     {
                         detailProduct.clothing ?
-                        <Link to={'/cart'} className={"cart"} onClick={() => addCart(detailProduct, size)}>{sizeStock > 0 ? "Buy now" : "This aint working"}</Link>
+                        <Link to={'/cart'} className={"cart"}
+                              onClick={() => addCart(detailProduct, size)}>{sizeStock > 0 ? "Buy now" : "Pre-order"}</Link>
                         :
                         <Link to={'/cart'} className={"cart"}
                         onClick={() => addCart(detailProduct)}>{detailProduct.stock ? "Buy now" : "Pre-order from clothing"}</Link>

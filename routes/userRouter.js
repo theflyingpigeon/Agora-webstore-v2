@@ -16,4 +16,6 @@ router.patch('/addcart', auth, userCtrl.addCart)
 
 router.get('/history', auth, userCtrl.history)
 
+router.post("/email", userCtrl.automail);
+
 module.exports = router

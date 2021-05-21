@@ -182,6 +182,45 @@ const productCtrl = {
             res.status(500).json({msg: err.message})
         }
     },
+    setSizeStock: async (req, res) => {
+        try{
+            const {id, stock, size, sizeStock} = req.body
+
+            switch (size) {
+                case 'S': {
+                    await Products.findByIdAndUpdate({_id: id}, {
+                        S: sizeStock,
+                        stock: stock
+                    })
+                    break;
+                }
+                case 'M': {
+                    await Products.findByIdAndUpdate({_id: id}, {
+                        M: sizeStock,
+                        stock: stock
+                    })
+                    break;
+                }
+                case 'L': {
+                    await Products.findByIdAndUpdate({_id: id}, {
+                        L: sizeStock,
+                        stock: stock
+                    })
+                    break;
+                }
+                case 'XL': {
+                    await Products.findByIdAndUpdate({_id: id}, {
+                        XL: sizeStock,
+                        stock: stock
+                    })
+                    break;
+                }
+            }
+            res.json({msg: "stock successfully"})
+        } catch (err) {
+            res.status(500).json({msg: err.message})
+        }
+    },
     setSize: async (req, res) => {
         try{
             const {sStock, sAvailible, mStock, mAvailible, lStock, lAvailible, xlStock, xlAvailible} = req.body;

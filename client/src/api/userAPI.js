@@ -36,9 +36,9 @@ function UserAPI(token) {
             return item._id !== product._id
         })
 
-        var stock;
+        let stock;
 
-        product.title = product.title + ' ' + size
+        if (product.clothing) product.title = product.title + ' ' + size
 
         if (check) {
             setCart([...cart, {...product, quantity: 1}])
@@ -49,7 +49,7 @@ function UserAPI(token) {
                 })
             }
 
-            if (size.length > 0) {
+            if (product.clothing) {
                 switch (size) {
                     case 'S' :{
                         stock = product.S

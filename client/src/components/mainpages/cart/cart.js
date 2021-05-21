@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import {GlobalState} from '../../../GlobalState'
 import axios from 'axios'
 import PaypalButton from "./paypalButton";
+import Emailer from "../utils/Emailer";
 
 function Cart() {
     const state = useContext(GlobalState)
@@ -95,6 +96,8 @@ function Cart() {
             })
             console.log(data)
         }
+
+        Emailer({name: address.recipient_name}, payment, false, "", paymentID, cart)
 
         setCart([])
         addToCart([])

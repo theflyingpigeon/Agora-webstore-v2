@@ -11,6 +11,7 @@ import OrderDetails from "./history/orderDetails";
 import Categories from "./categories/categories";
 import CreateProduct from "./createProduct/createProduct";
 import StockForm from "./utils/StockForm";
+import ContactForm from './utils/Emailer'
 import {GlobalState} from "../../GlobalState";
 
 function Pages() {
@@ -35,6 +36,8 @@ function Pages() {
 
            <Route path={'/history'} exact component={isLogged ? OrderHistory : NotFound} />
            <Route path={'/history/:id'} exact component={isLogged ? OrderDetails : NotFound} />
+
+           <Route path={'/email'} exact component={isLogged ? ContactForm : NotFound} />
 
            <Route path={'*'} exact component={NotFound} />
        </Switch>

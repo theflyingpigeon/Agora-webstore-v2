@@ -18,6 +18,9 @@ router.route('/updateStock')
 router.route('/setStock')
     .post(productCtrl.setStock)
 
+router.route('/setSizeStock')
+    .post(productCtrl.setSizeStock)
+
 router.route('/setStockS')
     .post(productCtrl.setStockS)
 
