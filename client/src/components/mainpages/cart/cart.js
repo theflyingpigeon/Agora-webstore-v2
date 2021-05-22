@@ -16,10 +16,10 @@ function Cart() {
     useEffect(() =>{
         const getTotal = () =>{
             const total = cart.reduce((prev, item) => {
-                return ((prev + (item.price * item.quantity) + shipmentFrees).toFixed(2))
+                return ((prev + (item.price * item.quantity) + shipmentFrees))
             },0)
 
-            setTotal(total)
+            setTotal(total.toFixed(2))
         }
 
         getTotal()

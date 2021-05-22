@@ -106,6 +106,14 @@ function CreateProduct() {
         setProduct({...product, [name]: value})
     }
 
+    const ClothingCheck = () =>{
+        products.forEach(product => {
+            product.clothing = !checked
+        })
+        setProduct([...products])
+        setChecked(!checked)
+    }
+
     const handleSubmit = async e => {
         e.preventDefault()
 
@@ -193,7 +201,7 @@ function CreateProduct() {
 
                 <div>
                     <label htmlFor={"Clothing"}>Clothing</label>
-                    <input type={"checkbox"} value={checked} onClick={() => setChecked(!checked)}/>
+                    <input type={"checkbox"} checked={checked} onChange={ClothingCheck}/>
                 </div>
 
                 <div className={"row"}>
