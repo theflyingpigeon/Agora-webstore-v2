@@ -33,6 +33,7 @@ function Pages() {
            <Route path={'/Inventory'} exact component={isAdmin ? StockForm : NotFound} />
 
            <Route path={'/cart'} exact component={Cart} />
+           boop
 
            <Route path={'/history'} exact component={isLogged ? OrderHistory : NotFound} />
            <Route path={'/history/:id'} exact component={isLogged ? OrderDetails : NotFound} />
