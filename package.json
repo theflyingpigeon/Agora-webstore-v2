@@ -12,7 +12,7 @@
     "install-all": "concurrently \"npm run server-install\" \"npm run client-install\"",
     "dev": "concurrently \"npm run server-install\" \"npm run client\"",
     "update": "git add . && git commit -m \"Added a confirm when ypu delete multiple items\" && git push heroku",
-    "updateGithub": "git add . && git commit -m \"Now with stock, multiple sizes and more\" && git push origin",
+    "updateGithub": "git add . && git commit -m \"Now with email support\" && git push origin",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "keywords": [],
