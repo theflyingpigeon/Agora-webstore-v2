@@ -80,25 +80,23 @@ function StockForm() {
 
                 <tbody>
                 {
-                    product.map(product => {
-                        if (!product.clothing) return (
-                            <tr key={product._id}>
-                                <td><img src={product.images.url} alt={"product item"} height={50}/></td>
-                                <td>{product.title}</td>
-                                <td>{product.stock}</td>
-                                <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
-                                <td>
-                                    <button type={"submit"} onClick={e => updateStock(e, product._id, stock)}>Save
-                                    </button>
-                                </td>
-                            </tr>
-                        );
-                    })
+                    product.map(product => (
+                        <tr key={product._id}>
+                            <td><img src={product.images.url} alt={"product item"} height={50}/></td>
+                            <td>{product.title}</td>
+                            <td>{product.stock}</td>
+                            <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
+                            <td>
+                                <button type={"submit"} onClick={e => updateStock(e, product._id, stock)}>Save
+                                </button>
+                            </td>
+                        </tr>
+                    ))
                 }
                 </tbody>
             </table>
 
-            <br />
+            <br/>
 
             {
                 product.map(product => {
@@ -128,37 +126,45 @@ function StockForm() {
                                     <td>S</td>
                                     <td>{product.S}</td>
                                     <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
-                                    <td><button type={"submit"} onClick={e => updateStockS(e, product, stock)}>Save
-                                    </button></td>
+                                    <td>
+                                        <button type={"submit"} onClick={e => updateStockS(e, product, stock)}>Save
+                                        </button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>M</td>
                                     <td>{product.M}</td>
                                     <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
-                                    <td><button type={"submit"} onClick={e => updateStockM(e, product, stock)}>Save
-                                    </button></td>
+                                    <td>
+                                        <button type={"submit"} onClick={e => updateStockM(e, product, stock)}>Save
+                                        </button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>L</td>
                                     <td>{product.L}</td>
                                     <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
-                                    <td><button type={"submit"} onClick={e => updateStockL(e, product, stock)}>Save
-                                    </button></td>
+                                    <td>
+                                        <button type={"submit"} onClick={e => updateStockL(e, product, stock)}>Save
+                                        </button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>XL</td>
                                     <td>{product.XL}</td>
                                     <td><input type={"number"} onChange={text => setStock(text.target.value)}/></td>
-                                    <td><button type={"submit"} onClick={e => updateStockXL(e, product, stock)}>Save
-                                    </button></td>
+                                    <td>
+                                        <button type={"submit"} onClick={e => updateStockXL(e, product, stock)}>Save
+                                        </button>
+                                    </td>
                                 </tr>
                                 </tbody>
 
                             </table>
-                            <br />
+                            <br/>
                         </div>
                     )
                 })

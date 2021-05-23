@@ -13,29 +13,29 @@ function Cart() {
 
     const shipmentFrees = 6.75
 
-    useEffect(() =>{
-        const getTotal = () =>{
+    useEffect(() => {
+        const getTotal = () => {
             const total = cart.reduce((prev, item) => {
                 return ((prev + (item.price * item.quantity) + shipmentFrees))
-            },0)
+            }, 0)
 
             setTotal(total.toFixed(2))
         }
 
         getTotal()
 
-    },[cart])
+    }, [cart])
 
-    const addToCart = async (cart) =>{
+    const addToCart = async (cart) => {
         await axios.patch('/user/addcart', {cart}, {
             headers: {Authorization: token}
         })
     }
 
 
-    const increment = (id) =>{
+    const increment = (id) => {
         cart.forEach(item => {
-            if(item._id === id){
+            if (item._id === id) {
                 item.quantity += 1
                 axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: 1, state: true}) //When state is true the stock will decrease
             }
@@ -45,9 +45,9 @@ function Cart() {
         addToCart(cart)
     }
 
-    const decrement = (id) =>{
+    const decrement = (id) => {
         cart.forEach(item => {
-            if(item._id === id){
+            if (item._id === id) {
                 item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1
                 axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: 1, state: false}) //When state is false the stock will increase
             }
@@ -57,12 +57,17 @@ function Cart() {
         addToCart(cart)
     }
 
-    const removeProduct = id =>{
-        if(window.confirm("Do you want to delete this product?")){
+    const removeProduct = id => {
+        if (window.confirm("Do you want to delete this product?")) {
             cart.forEach((item, index) => {
-                if(item._id === id){
+                if (item._id === id) {
                     cart.splice(index, 1)
-                    axios.post('/api/updateStock', {id: item._id, stock: item.stock, quantity: item.quantity, state: false}) //When state is false the stock will increase
+                    axios.post('/api/updateStock', {
+                        id: item._id,
+                        stock: item.stock,
+                        quantity: item.quantity,
+                        state: false
+                    }) //When state is false the stock will increase
                 }
             })
 
@@ -71,22 +76,15 @@ function Cart() {
         }
     }
 
-    const tranSuccess = async(payment) => {
+    const tranSuccess = async (payment) => {
         const {paymentID, address} = payment;
 
 
-        if(isLogged){
+        if (isLogged) {
             await axios.post('/api/payment', {cart, paymentID, address}, {
                 headers: {Authorization: token}
             })
         } else {
-            const data = {
-                name: address.recipient_name,
-                email: payment.email,
-                paymentID: paymentID,
-                address: address,
-                cart: cart
-            }
             await axios.post('/api/paymentWOA', {
                 name: address.recipient_name,
                 email: payment.email,
@@ -94,19 +92,17 @@ function Cart() {
                 address: address,
                 cart: cart
             })
-            console.log(data)
         }
 
-        Emailer({name: address.recipient_name}, payment, false, "", paymentID, cart)
 
         setCart([])
         addToCart([])
+        await Emailer(paymentID)
         alert("You have successfully placed an order.")
-        // console.log(payment)
     }
 
 
-    if(cart.length === 0)
+    if (cart.length === 0)
         return <h2 style={{textAlign: "center", fontSize: "5rem"}}>Cart Empty</h2>
 
     return (
@@ -114,7 +110,7 @@ function Cart() {
             {
                 cart.map(product => (
                     <div className="detail cart" key={product._id}>
-                        <img src={product.images.url} alt="" />
+                        <img src={product.images.url} alt=""/>
 
                         <div className="box-detail">
                             <h2>{product.title}</h2>
@@ -124,9 +120,9 @@ function Cart() {
                             <p>{product.content}</p>
 
                             <div className="amount">
-                                <button onClick={() => decrement(product._id)}> - </button>
+                                <button onClick={() => decrement(product._id)}> -</button>
                                 <span>{product.quantity}</span>
-                                <button onClick={() => increment(product._id)}> + </button>
+                                <button onClick={() => increment(product._id)}> +</button>
                             </div>
 
                             <div className="delete"
@@ -144,7 +140,7 @@ function Cart() {
                     <h3>Total: €{total}</h3>
                     <PaypalButton
                         total={total}
-                        tranSuccess={tranSuccess} />
+                        tranSuccess={tranSuccess}/>
                 </div>
             </div>
         </div>

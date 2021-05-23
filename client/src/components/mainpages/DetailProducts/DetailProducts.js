@@ -42,6 +42,9 @@ function DetailProducts() {
                 setSize('XL');
                 break;
             }
+            default: {
+                break;
+            }
         }
     }
 

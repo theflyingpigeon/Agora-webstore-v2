@@ -126,33 +126,25 @@ const userCtrl = {
         }
     },
 
-    automail: (req, res) => {
+    automail: async (req) => {
+        const {paymentID} = req.body
 
-        const {name, paymentID, cart, payment} = req.body
+        const payment = await Payments.findOne({paymentID: req.body.paymentID})
 
-        const rowdata = () => {
-            return cart.map(product => {
-                product.title
-                product.price
+        let itemlist = []
 
-            })
-        }
+        payment.cart.forEach(product => {
+            itemlist = [...itemlist, {Name: product.title, quantity: product.quantity, price: product.price}]
+        })
 
         const email = {
             body: {
-                name: name,
-                intro: `Your order (order number: ${paymentID}) has been successfully processed`,
+                name: payment.name,
+                intro: `Your order (order number: ${payment.paymentID}) has been successfully processed`,
                 table: {
-                    data: cart
+                    data: itemlist
                 },
-                action: {
-                    instructions: 'To learn more about your order press the following button',
-                    button: {
-                        text: 'Go to order history',
-                        link: 'https://mailgen.js/confirm?s=d9729feb74992cc3482b350163a1a010'
-                    }
-                },
-                outro: 'We thank you for your help'
+                outro: 'We thank you for your order by The Agora merch store'
             }
         };
 
@@ -161,9 +153,21 @@ const userCtrl = {
         const emailText = mailGenarator.generatePlaintext(email);
 
         transporter.sendMail({
-            from: 'no-reply@mailgen.js',
-            to: 'shaeme@icloud.com',
+            from: 'no-reply@mailgen.js',    //replace with agora mail
+            to: 'shaeme@icloud.com',        //replace with customer mail (payment.email)
             subject: 'Order confirmation from Agora',
+            html: emailBody,
+            text: emailText,
+        }, function (err) {
+            if (err) return console.log(err);
+            console.log("Message send successfully")
+        })
+
+
+        transporter.sendMail({
+            from: 'no-reply@mailgen.js',    //replace with agora mail
+            to: 'shaeme@icloud.com',        //replace with agora mail
+            subject: 'Order placed by customer',
             html: emailBody,
             text: emailText,
         }, function (err) {

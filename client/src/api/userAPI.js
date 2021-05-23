@@ -67,6 +67,9 @@ function UserAPI(token) {
                         stock = product.XL;
                         break;
                     }
+                    default: {
+                        break;
+                    }
                 }
             } else {
                 stock = product.stock

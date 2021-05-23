@@ -1,13 +1,10 @@
-import React from "react";
 import axios from "axios";
 
-const ContactForm = (name, payment, status, tracking, paymentID, cart) => {
+const ContactForm = (paymentID) => {
 
-    const sendEmail = () => {
-        axios.post('/user/email', {status, paymentID, cart, name})
-        console.log('payment var', payment)
+    const sendEmail = async () => {
+        await axios.post('/user/email', {paymentID})
     };
-
     sendEmail()
 }
 
