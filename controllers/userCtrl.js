@@ -127,8 +127,6 @@ const userCtrl = {
     },
 
     automail: async (req) => {
-        const {paymentID} = req.body
-
         const payment = await Payments.findOne({paymentID: req.body.paymentID})
 
         let itemlist = []
@@ -174,7 +172,7 @@ const userCtrl = {
             if (err) return console.log(err);
             console.log("Message send successfully")
         })
-    }
+    },
 }
 
 

@@ -1,6 +1,7 @@
 const Payments = require('../models/paymentModel')
 const Users = require('../models/userModel')
 const Products = require('../models/productModel')
+const {mailGenarator, transporter} = require('../middleware/emailer')
 
 
 const paymentCtrl = {
@@ -45,6 +46,47 @@ const paymentCtrl = {
                 trackAndTrace: req.body.trackAndTrace,
                 shippingCompany: req.body.shippingCompany
             })
+
+            const shippment = await Payments.findById(req.body.id)
+
+            let itemlist = []
+
+            shippment.cart.forEach(product => {
+                itemlist = [...itemlist, {Name: product.title, quantity: product.quantity, price: product.price}]
+            })
+
+            const email = {
+                body: {
+                    name: shippment.name,
+                    intro: `Your order (order number: ${shippment.paymentID}) has been shipped to you with PostNL. The Track and trace code is ${shippment.trackAndTrace}`,
+                    table: {
+                        data: itemlist
+                    },
+                    action: {
+                        instructions: "Click on the button bellow to follow your order",
+                        button: {
+                            text: "Follow your order",
+                            link: `https://jouw.postnl.nl/track-and-trace/${shippment.trackAndTrace}-${shippment.address.country_code}-${shippment.address.postal_code}`
+                        }
+                    },
+                    outro: 'We thank you for your order by The Agora merch store'
+                }
+            };
+
+            const emailBody = mailGenarator.generate(email);
+
+            const emailText = mailGenarator.generatePlaintext(email);
+
+            transporter.sendMail({
+                to: 'shaeme@icloud.com',        //replace with customer mail (payment.email)
+                subject: 'Order confirmation from Agora',
+                html: emailBody,
+                text: emailText,
+            }, function (err) {
+                if (err) return console.log(err);
+                console.log("Message send successfully")
+            })
+
             if (!payment) return res.status(400).json({msg: "This payment does not exists"})
         } catch (err) {
             res.status(500).json({msg: err.message})
