@@ -22,7 +22,7 @@
     "@popperjs/core": "^2.9.2",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.25.1",
-    "concurrently": "^6.0.2",
+    "concurrently": "^6.5.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
