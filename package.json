@@ -31,7 +31,7 @@
     "jsonwebtoken": "^8.5.1",
     "mailgen": "^2.0.14",
     "mongoose": "^6.4.6",
-    "nodemailer": "^6.6.0",
+    "nodemailer": "^6.9.9",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
